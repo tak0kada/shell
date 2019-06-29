@@ -1,3 +1,4 @@
+from pathlib import Path
 import subprocess
 
 class ShellException(Exception):
@@ -8,15 +9,15 @@ def exec(cmd: str, timeout_s: float = 0, log: Path = None) -> None:
     timeout_s = "" if timeout_s == 0 else "timeout {} ".format(timeout_s)
     cmd = "set -euxo pipefail\n" + timeout_s + cmd
     proc = subprocess.run(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    print(proc.stdout.decode('utf-8'))
+    sh_msg = proc.stdout.decode('utf-8')
+    print(sh_msg)
 
     if proc.returncode != 0:
+        msg = "Execution of \"{}\" failed. \n\n {}"
         if Path == None:
-            msg = "Execution of \"{}\" failed. \n\n {}"
-            sh_msg = proc.stdout.decode('utf-8')
             raise ShellException(msg.format(cmd_org, sh_msg))
         else:
-            with open(Path, "w") as f:
+            with open(log, "w") as f:
                 f.write(msg.format(cmd_org, sh_msg))
 
 def valueof(cmd: str, timeout_s: float = 0) -> str:
