@@ -14,10 +14,10 @@ def exec(cmd: str, timeout_s: float = 0, log: Path = None) -> None:
 
     if proc.returncode != 0:
         msg = "Execution of \"{}\" failed. \n\n {}"
-        if Path == None:
-            raise ShellException(msg.format(cmd_org, sh_msg))
+        if log is None:
+            raise ShellException(msg.format(timeout_s + cmd_org, sh_msg))
         else:
-            with open(log, "w") as f:
+            with open(str(log.absolute()), "w") as f:
                 f.write(msg.format(cmd_org, sh_msg))
 
 def valueof(cmd: str, timeout_s: float = 0) -> str:
@@ -32,7 +32,7 @@ def valueof(cmd: str, timeout_s: float = 0) -> str:
         # return ""
         msg = "Execution of \"{}\" failed. \n\n {}"
         sh_msg = proc.stdout.decode('utf-8')
-        raise ShellException(msg.format(cmd_org, sh_msg))
+        raise ShellException(msg.format(timeout_s + cmd_org, sh_msg))
 
 if __name__ == "__main__":
     exec("echo 'Hello World!'")
