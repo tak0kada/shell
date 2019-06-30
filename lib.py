@@ -18,7 +18,7 @@ def exec(cmd: str, timeout_s: float = 0, log: Path = None) -> None:
             raise ShellException(msg.format(timeout_s + cmd_org, sh_msg))
         else:
             with open(str(log.absolute()), "w") as f:
-                f.write(msg.format(cmd_org, sh_msg))
+                f.write(msg.format(timeout_s + cmd_org, sh_msg))
 
 def valueof(cmd: str, timeout_s: float = 0) -> str:
     cmd_org = cmd
