@@ -36,5 +36,5 @@ def valueof(cmd: str, timeout_s: float = 0) -> str:
 
 if __name__ == "__main__":
     exec("echo 'Hello World!'")
-    val = shell_valueof("pwd")
+    val = valueof("pwd")
     print(val)
